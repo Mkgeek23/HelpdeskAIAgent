@@ -260,6 +260,29 @@ java -jar helpdesk-agent/target/helpdesk-agent-0.0.1-SNAPSHOT.jar --spring.ai.mc
 
 ## Testy
 
+### Ręczne testowanie przez MCP Inspector
+
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) pozwala testować serwer MCP bez uruchamiania agenta i modelu językowego. Wymaga Node.js i npm z poleceniem `npx`.
+
+1. Uruchom `helpdesk-mcp-server` zgodnie z sekcją [Uruchomienie](#2-uruchom-serwer-mcp).
+2. W osobnym terminalu uruchom Inspector:
+
+   ```bash
+   npx @modelcontextprotocol/inspector
+   ```
+
+3. Otwórz w przeglądarce adres interfejsu wyświetlony w terminalu.
+4. Wybierz transport **Streamable HTTP**, ustaw adres serwera na `http://localhost:8081/mcp` i połącz się z serwerem.
+
+W interfejsie możesz sprawdzić:
+
+- **Tools** — pobrać listę narzędzi i wywołać np. `search_tickets`, `get_ticket` lub `create_ticket`, podając ich parametry.
+- **Resources** — odczytać artykuł `helpdesk://kb/vpn` lub szczegóły zgłoszenia `helpdesk://tickets/TICKET-001`.
+- **Prompts** — pobrać prompt `triage-ticket` z argumentem `description`, np. „Nie mogę połączyć się z VPN”. Inspector pokazuje treść promptu; klasyfikację przez model wykonuje endpoint agenta `/api/mcp/triage`.
+- **Elicitation i powiadomienia postępu** — sprawdzić prośbę o potwierdzenie przy tworzeniu zgłoszenia z priorytetem `CRITICAL` oraz powiadomienia wysyłane przez `generateWeeklyReport`.
+
+### Testy automatyczne
+
 Zestaw niewymagający uruchomionego zewnętrznego serwera MCP ani klucza modelu:
 
 ```bash
